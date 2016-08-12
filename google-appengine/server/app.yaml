@@ -1,0 +1,8 @@
+application: go-appengine-demo
+runtime: go
+api_version: go1
+auto_id_policy: default
+
+handlers:
+    - url: /data
+      script: _go_app
