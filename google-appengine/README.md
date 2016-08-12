@@ -27,10 +27,16 @@ code can be seen by accessing the datastore viewer as part of the GAE system.
 
 To test the demo locally, you must have the Go Google App Engine SDK installed.
 Then simply start the server on the app engine:
-    /path/to/google-appengine-go/dev_appserver.py --clear_datastore=yes server
+```
+/path/to/google-appengine-go/dev_appserver.py --clear_datastore=yes server
+```
 
 Then run the demo:
-    go run appengineDemo.go
+```
+go run appengineDemo.go
+```
 
 And you can view the datastore entries:
-    http://localhost:8000/datastore
+```
+http://localhost:8000/datastore
+```
