@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="LitmusHealth" parent="Theme.AppCompat.Light">
+    <item name="android:textColorPrimary">@android:color/white</item>
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:windowBackground">@android:color/white</item>
+    <item name="android:actionBarStyle">@style/LitmusActionBarStyle</item>
+    <item name="actionBarStyle">@style/LitmusActionBarStyle</item>
+  </style>
+
+  <style name="LitmusHealthMinimal" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:textColorPrimary">@android:color/white</item>
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:windowBackground">@android:color/white</item>
+  </style>
+
+  <style name="LitmusHealthNoBack" parent="LitmusHealth">
+    <item name="actionBarStyle">@style/LitmusNoBackActionBarStyle</item>
+  </style>
+
+  <style name="LitmusActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <!-- theme style -->
+    <item name="android:background">@color/litmus_dark_blue</item>
+    <item name="background">@color/litmus_dark_blue</item>
+  </style>
+
+  <style name="LitmusNoBackActionBarStyle" parent="LitmusActionBarStyle">
+    <!-- replace title on ActionBar -->
+    <item name="android:displayOptions">showTitle</item>
+    <item name="displayOptions">showTitle</item>
+  </style>
+
+
+</resources>

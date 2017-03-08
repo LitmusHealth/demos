@@ -1,0 +1,39 @@
+<resources>
+
+  <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="litmus_unit">3dp</dimen>
+  <dimen name="litmus_unit_2x">6dp</dimen>
+  <dimen name="litmus_unit_3x">9dp</dimen>
+  <dimen name="litmus_unit_4x">12dp</dimen>
+    <dimen name="litmus_unit_6x">18dp</dimen>
+
+    <dimen name="litmus_margin_small">@dimen/litmus_unit_4x</dimen>
+
+    <dimen name="litmus_em">17sp</dimen>
+    <dimen name="litmus_em_small">13sp</dimen>
+  <dimen name="litmus_em_small_half">7sp</dimen>
+  <dimen name="litmus_em_large">30sp</dimen>
+  <dimen name="litmus_em_extra_large">45sp</dimen>
+  <dimen name="litmus_em_small_heading">20sp</dimen>
+
+  <!-- offset for transparent pixels of 9-patch images -->
+
+    <!-- 1 em - patch offset -->
+  <dimen name="litmus_button_padding_top">19dp</dimen><!-- roughly 17 (em) + 2 (corners) -->
+  <dimen name="litmus_button_padding_bottom">27dp</dimen><!-- roughly 17 (em) + 2 (corners) + 8 (shadow) -->
+
+  <!-- 1 small em - patch offset -->
+  <dimen name="litmus_button_task_padding_top">15dp</dimen><!-- roughly 13 (em) + 2 (corners) -->
+  <dimen name="litmus_button_task_padding_bottom">23dp</dimen><!-- roughly 13 (em) + 2 (corners) + 8 (shadow) -->
+
+  <!-- margins with patch offsets -->
+  <dimen name="litmus_card_padding_top">14dp</dimen><!-- 12 + 2 -->
+  <dimen name="litmus_card_padding_horizontal">18dp</dimen><!-- 12 + 6 -->
+  <dimen name="litmus_card_padding_bottom">20dp</dimen><!-- 12 + 8 -->
+
+    <dimen name="litmus_ui_validation_field_right_padding">51dp</dimen><!-- 25 + 17 * 1.5 -->
+
+  <dimen name="litmus_ui_radio_indicator_offset">3dp</dimen><!-- pixels radio checked indicator is from edges -->
+
+</resources>

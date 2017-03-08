@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android" >
+  <item android:drawable="@drawable/radio_outer" />
+  <item android:drawable="@drawable/radio_inner"
+    android:top="@dimen/litmus_ui_radio_indicator_offset"
+    android:left="@dimen/litmus_ui_radio_indicator_offset"
+    android:bottom="@dimen/litmus_ui_radio_indicator_offset"
+    android:right="@dimen/litmus_ui_radio_indicator_offset"/>
+</layer-list>

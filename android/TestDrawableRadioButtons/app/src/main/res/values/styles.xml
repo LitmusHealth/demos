@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+  <style name="LitmusExpandVerticalStyle">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+
+  <style name="LitmusContainerStyle" parent="LitmusExpandVerticalStyle">
+    <item name="android:padding">@dimen/litmus_margin_small</item>
+  </style>
+
+  <style name="LitmusFauxCardStyle" parent="LitmusExpandVerticalStyle">
+    <item name="android:background">@drawable/bg_white_shadow</item>
+    <item name="android:paddingTop">@dimen/litmus_card_padding_top</item>
+    <item name="android:paddingLeft">@dimen/litmus_card_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/litmus_card_padding_horizontal</item>
+    <item name="android:paddingBottom">@dimen/litmus_card_padding_bottom</item>
+  </style>
+
+  <style name="LitmusTextStyle" parent="LitmusExpandVerticalStyle">
+    <item name="android:textColor">@color/litmus_dark_gray</item>
+    <item name="android:textSize">@dimen/litmus_em</item>
+  </style>
+
+  <style name="LitmusParagraphStyle" parent="LitmusTextStyle">
+    <item name="android:lineSpacingExtra">4sp</item>
+  </style>
+
+  <style name="LitmusSpecialParagraphStyle" parent="LitmusParagraphStyle">
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:paddingLeft">@dimen/litmus_unit_6x</item>
+    <item name="android:paddingRight">@dimen/litmus_unit_6x</item>
+  </style>
+
+  <style name="LitmusLinkStyle" parent="LitmusTextStyle">
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="LitmusEmphasizedStyle" parent="LitmusTextStyle">
+    <item name="android:textColor">@color/litmus_medium_orange</item>
+  </style>
+
+  <style name="LitmusImportantStyle" parent="LitmusTextStyle">
+    <item name="android:textColor">@color/litmus_medium_green</item>
+  </style>
+
+  <style name="LitmusButtonStyle" parent="LitmusTextStyle">
+    <item name="android:background">@drawable/button_states</item>
+    <item name="android:textColor">@drawable/button_states_label_color</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textSize">@dimen/litmus_em</item>
+    <item name="android:paddingTop">@dimen/litmus_button_padding_top</item>
+    <item name="android:paddingBottom">@dimen/litmus_button_padding_bottom</item>
+  </style>
+
+  <style name="LitmusTaskButtonStyle" parent="LitmusButtonStyle">
+    <item name="android:textSize">@dimen/litmus_em_small</item>
+    <item name="android:paddingTop">@dimen/litmus_button_task_padding_top</item>
+    <item name="android:paddingBottom">@dimen/litmus_button_task_padding_bottom</item>
+  </style>
+
+  <style name="LitmusHeadingStyle" parent="LitmusTextStyle">
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:textSize">@dimen/litmus_em_extra_large</item>
+    <item name="android:layout_marginBottom">@dimen/litmus_em_large</item>
+  </style>
+
+  <style name="LitmusSubheadingStyle" parent="LitmusHeadingStyle">
+    <item name="android:textSize">@dimen/litmus_em_large</item>
+    <item name="android:layout_marginBottom">@dimen/litmus_em_large</item><!-- this was supposed to be 24, but i figured semantics trumped here -->
+  </style>
+
+  <style name="LitmusSmallHeadingStyle" parent="LitmusTextStyle">
+    <item name="android:textSize">@dimen/litmus_em_small_heading</item>
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+  </style>
+
+  <style name="LitmusListItemStyle" parent="LitmusTextStyle">
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:drawableLeft">@drawable/dot</item>
+    <item name="android:layout_marginLeft">@dimen/litmus_unit_6x</item>
+    <item name="android:drawablePadding">@dimen/litmus_unit_3x</item>
+  </style>
+
+  <style name="LitmusEditTextStyle" parent="LitmusTextStyle">
+    <item name="android:inputType">text</item>
+    <item name="android:focusableInTouchMode">true</item>
+    <item name="android:background">@drawable/bg_gray_bordered</item>
+    <item name="android:textColor">@color/litmus_dark_blue</item>
+    <item name="android:textColorHint">@color/litmus_faded_dark_blue</item>
+    <item name="android:layout_marginBottom">@dimen/litmus_unit_2x</item>
+  </style>
+
+  <style name="LitmusRequiredEditTextStyle" parent="LitmusEditTextStyle">
+    <item name="android:paddingRight">@dimen/litmus_ui_validation_field_right_padding</item>
+    <item name="validDrawable">@drawable/required_valid</item>
+    <item name="invalidDrawable">@drawable/required_invalid</item>
+  </style>
+
+  <style name="LitmusAutoCompleteTextStyle" parent="LitmusTextStyle">
+    <item name="android:padding">@dimen/litmus_em_small_half</item>
+  </style>
+
+  <style name="LitmusRadioButtonStyle" parent="LitmusTextStyle">
+    <item name="android:drawableLeft">@drawable/radio_selector</item>
+    <item name="android:button">@android:color/transparent</item>
+    <item name="android:drawablePadding">@dimen/litmus_em_small_half</item>
+    <item name="android:padding">@dimen/litmus_em_small_half</item>
+  </style>
+
+  <style name="LitmusSeekBarStyle" parent="LitmusExpandVerticalStyle">
+    <item name="android:maxHeight">@dimen/litmus_unit_2x</item>
+    <item name="android:progressDrawable">@drawable/seekbar_layers</item>
+    <item name="android:thumb">@drawable/seekbar_scrubber</item>
+    <item name="android:progress">50</item>
+    <item name="android:max">100</item>
+  </style>
+
+</resources>
