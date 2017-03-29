@@ -18,7 +18,7 @@ final class DatabaseHelper extends SQLiteOpenHelper {
     static final String columnLat = "latitude";
     static final String columnLong = "longtidue";
 
-    public DatabaseHelper(Context context) {
+    DatabaseHelper(Context context) {
         super(context, name, null, 1);
     }
 

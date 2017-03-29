@@ -22,14 +22,14 @@ public class LocationPermissionDialogFragment extends DialogFragment {
                                    new DialogInterface.OnClickListener() {
                                        public void onClick(DialogInterface dialog, int which) {
                                            ActivityCompat.requestPermissions(getActivity(),
-                                                                             new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
+                                                                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                                                              MainActivity.LOCATION_PERMISSION);
                                        }
                                    })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-					                                dialog.cancel();
-                                                }
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
                 })
                 .create();
     }

@@ -28,10 +28,10 @@ import java.util.List;
 
 /**
  * @author Rob Agnese
- * (c) 2017 Litmus Health
+ *         (c) 2017 Litmus Health
  */
 
-public class LocationService extends Service implements LocationListener {
+public class LocationService extends Service {
     private static final String TAG = "LocationService";
     // Some constants for interacting with the service
     public static final String BUNDLE_KEY = "location_bundle_key";
@@ -41,21 +41,81 @@ public class LocationService extends Service implements LocationListener {
     // Managers
     private LocationManager locationManager;
     // Data members
-    private static final int FOREGROUND_NOTIFICATION_ID = 1;
-    private static final int NOTIFICATION_ID = 2;
     private ArrayList<Parameters> requirements = new ArrayList<>();
+    private LocationListener locationListener;
 
     private SQLiteDatabase db;
 
-    // Service Overrides
     @Override
     public void onCreate() {
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         Log.d(TAG, "onCreate()");
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.d(TAG, "onLocationChanged()");
+                final ContentValues cv = new ContentValues(2);
+                cv.put(DatabaseHelper.columnLat, location.getLatitude());
+                cv.put(DatabaseHelper.columnLong, location.getLongitude());
+
+                db.insert(DatabaseHelper.table, null, cv);
+                Log.i(TAG, "Added GPS datum: Lat = " + Double.toString(location.getLatitude()) +
+                           "; Long = " + Double.toString(location.getLongitude()));
+
+                Toast.makeText(LocationService.this,
+                               "Added GPS datum: Lat = " + Double.toString(location.getLatitude()) +
+                               "; Long = " + Double.toString(location.getLongitude()),
+                               Toast.LENGTH_SHORT).show();
+
+                // Remove any expired studies and reset our location updates
+                requirements = removeExpiredRequirements(requirements,
+                                                         GregorianCalendar.getInstance().getTime());
+                if (requirements.isEmpty()) {
+                    stopSelf();
+                    return;
+                }
+
+                requestLocationUpdates(requirements);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                Log.d(TAG, "onStatusChanged()");
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                Log.d(TAG, "onProviderEnabled()");
+                final NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(NotificationConstants.NOTIFICATION_ID);
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Log.d(TAG, "onProviderDisabled()");
+                final Notification notification =
+                        new NotificationCompat.Builder(LocationService.this)
+                                .setContentTitle("Litmus GPS Demo")
+                                .setContentText("Please re-enable GPS!")
+                                .setSmallIcon(R.drawable.notification_icon)
+                                .setContentIntent(PendingIntent.getActivity(LocationService.this,
+                                                                            0,
+                                                                            new Intent(
+                                                                                    LocationService.this,
+                                                                                    MainActivity.class),
+                                                                            PendingIntent.FLAG_ONE_SHOT))
+                                .build();
+                final NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(NotificationConstants.NOTIFICATION_ID, notification);
+            }
+        };
+
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, final int flags, final int startId) {
         Log.d(TAG, "onStartCommand()");
         db = new DatabaseHelper(this).getWritableDatabase();
 
@@ -96,16 +156,16 @@ public class LocationService extends Service implements LocationListener {
 
         final Notification notification =
                 new NotificationCompat.Builder(this)
-                                      .setContentTitle("Litmus GPS Demo")
-                                      .setContentText("We are tracking your location.")
-                                      .setSmallIcon(R.drawable.notification_icon)
-                                      .setContentIntent(PendingIntent.getActivity(this,
-                                                                                  0,
-                                                                                  new Intent(this,
-                                                                                             MainActivity.class),
-                                                                                  PendingIntent.FLAG_UPDATE_CURRENT))
-                                      .build();
-        startForeground(FOREGROUND_NOTIFICATION_ID, notification);
+                        .setContentTitle("Litmus GPS Demo")
+                        .setContentText("We are tracking your location.")
+                        .setSmallIcon(R.drawable.notification_icon)
+                        .setContentIntent(PendingIntent.getActivity(this,
+                                                                    0,
+                                                                    new Intent(this,
+                                                                               MainActivity.class),
+                                                                    PendingIntent.FLAG_UPDATE_CURRENT))
+                        .build();
+        startForeground(NotificationConstants.FOREGROUND_NOTIFICATION_ID, notification);
         Log.d(TAG, "Started notification.");
 
         return START_REDELIVER_INTENT;
@@ -116,7 +176,7 @@ public class LocationService extends Service implements LocationListener {
         Log.d(TAG, "onDestroy()");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED) {
-            locationManager.removeUpdates(this);
+            locationManager.removeUpdates(locationListener);
         } else {
             Log.i(TAG, "onDestroy: Did not have location permission.");
         }
@@ -124,68 +184,11 @@ public class LocationService extends Service implements LocationListener {
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(final Intent intent) {
         return null;
     }
 
-    // LocationListener Overrides
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d(TAG, "onLocationChanged()");
-        final ContentValues cv = new ContentValues(2);
-        cv.put(DatabaseHelper.columnLat, location.getLatitude());
-        cv.put(DatabaseHelper.columnLong, location.getLongitude());
-
-        db.insert(DatabaseHelper.table, null, cv);
-        Log.i(TAG, "Added GPS datum: Lat = " + Double.toString(location.getLatitude()) +
-              "; Long = " + Double.toString(location.getLongitude()));
-
-        Toast.makeText(this, "Added GPS datum: Lat = " + Double.toString(location.getLatitude()) +
-                "; Long = " + Double.toString(location.getLongitude()), Toast.LENGTH_SHORT).show();
-
-        // Remove any expired studies and reset our location updates
-        requirements = removeExpiredRequirements(requirements,
-                                                 GregorianCalendar.getInstance().getTime());
-        if (requirements.isEmpty()) {
-            stopSelf();
-            return;
-        }
-
-        requestLocationUpdates(requirements);
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-        Log.d(TAG, "onStatusChanged()");
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-        Log.d(TAG, "onProviderEnabled()");
-        final NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(NOTIFICATION_ID);
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-        Log.d(TAG, "onProviderDisabled()");
-        final Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("Litmus GPS Demo")
-                .setContentText("Please re-enable GPS!")
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentIntent(PendingIntent.getActivity(this,
-                                                            0,
-                                                            new Intent(this, MainActivity.class),
-                                                            PendingIntent.FLAG_ONE_SHOT))
-                .build();
-        final NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, notification);
-    }
-
-    private void requestLocationUpdates(List<Parameters> req) {
+    private void requestLocationUpdates(final List<Parameters> req) {
         Log.d(TAG, "requestLocationUpdates()");
         if (req.isEmpty()) {
             Log.e(TAG, "requestLocationUpdates: Tried to request location updates" +
@@ -198,7 +201,7 @@ public class LocationService extends Service implements LocationListener {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                                    findStrictestTime(req),
                                                    findStrictestDistance(req),
-                                                   this);
+                                                   locationListener);
         } else {
             Log.e(TAG, "requestLocationUpdates: Did not have location permission.");
         }
@@ -210,7 +213,7 @@ public class LocationService extends Service implements LocationListener {
         return START_NOT_STICKY;
     }
 
-    private long findStrictestTime(List<Parameters> req) {
+    private long findStrictestTime(final List<Parameters> req) {
         Log.d(TAG, "findStrictestTime()");
         long dt = Long.MAX_VALUE;
 
@@ -225,7 +228,7 @@ public class LocationService extends Service implements LocationListener {
         return dt;
     }
 
-    private float findStrictestDistance(List<Parameters> req) {
+    private float findStrictestDistance(final List<Parameters> req) {
         Log.d(TAG, "findStrictestDistance()");
         float dx = Float.MAX_VALUE;
 
@@ -240,7 +243,8 @@ public class LocationService extends Service implements LocationListener {
         return dx;
     }
 
-    private ArrayList<Parameters> removeExpiredRequirements(List<Parameters> req, Date now) {
+    private ArrayList<Parameters> removeExpiredRequirements(final List<Parameters> req,
+                                                            final Date now) {
         Log.d(TAG, "removeExpiredRequirements()");
         ArrayList<Parameters> result = new ArrayList<>();
         for (Parameters p : req) {
@@ -254,11 +258,23 @@ public class LocationService extends Service implements LocationListener {
         private float dx; // meters
         private Date endDate;
 
-        Parameters(long t, float x, Date d) { dt = t; dx = x; endDate = d; }
+        Parameters(long t, float x, Date d) {
+            dt = t;
+            dx = x;
+            endDate = d;
+        }
 
-        long dt() { return dt; }
-        float dx() { return dx; }
-        Date endDate() { return endDate; }
+        long dt() {
+            return dt;
+        }
+
+        float dx() {
+            return dx;
+        }
+
+        Date endDate() {
+            return endDate;
+        }
     }
 }
 
