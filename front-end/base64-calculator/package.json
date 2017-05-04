@@ -1,0 +1,29 @@
+{
+  "name": "base64-calculator",
+  "version": "0.1.0",
+  "description": "Demo app for Typescript and React.js that happens to also calculate something.",
+  "main": "base64-calculator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hash",
+    "demo",
+    "react",
+    "typescript"
+  ],
+  "author": "Rob Agnese",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^15.0.23",
+    "@types/react-dom": "^15.5.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "jshashes": "^1.0.6"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.2",
+    "source-map-loader": "^0.2.1",
+    "typescript": "^2.2.2"
+  }
+}
